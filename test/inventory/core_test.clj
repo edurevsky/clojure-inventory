@@ -11,4 +11,12 @@
     (let [request {:request-method :get :uri "/ok"}
           response (handler request)
           expected 200]
-      (is (= (:status response) expected)))))
+      (is (= (:status response) expected))))
+  (testing "Handler response should return status 200 and not have an empty body."
+    (let [request {:request-method :get :uri "/inventory"}
+          response (handler request)
+          expected-status 200]
+      (is
+        (and
+          (= (:status response) expected-status)
+          (not (nil? (:body response))))))))
