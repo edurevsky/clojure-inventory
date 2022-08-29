@@ -12,3 +12,10 @@
     (swap! db logic/add-item item)
     {:status 201
      :body   (get @db (:id item))}))
+
+(defn handle-get-item-by-id
+  [{:keys [db path-params]}]
+  (let [id (parse-uuid (:id path-params))]
+    (if-let [item (get @db id)]
+      {:status 200 :body item}
+      {:status 404})))
