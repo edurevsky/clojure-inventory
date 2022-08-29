@@ -6,3 +6,8 @@
    :name     s/Str
    :quantity s/Int
    :price    s/Num})
+
+(def NewItem
+  {:name     s/Str
+   :quantity s/Int
+   :price    s/Num})
