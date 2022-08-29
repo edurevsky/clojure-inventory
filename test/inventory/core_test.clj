@@ -8,12 +8,12 @@
     (is (= 1 1))))
 
 (deftest handler-test
-  (testing "Handler response should return status 200."
+  (testing "Should return status 200."
     (let [request {:request-method :get :uri "/ok"}
           response (handler request)
           expected 200]
       (is (= (:status response) expected))))
-  (testing "Handler response should return status 200 and not have an empty body."
+  (testing "Should return status 200 and not have an empty body."
     (let [request {:request-method :get :uri "/inventory"}
           response (handler request)
           expected-status 200
@@ -22,4 +22,25 @@
         (and
           (= (:status response) expected-status)
           (contains? body :inventory-items)
-          (contains? body :inventory-value))))))
+          (contains? body :inventory-value)))))
+  (testing "Should return status 201 and body id must not be nil."
+    (let [request {:request-method :post
+                   :uri            "/items"
+                   :body-params    {:name     "name"
+                                    :quantity 1
+                                    :price    0.1}}
+          response (handler request)
+          expected-status 201
+          body (m/decode-response-body response)]
+      (is
+        (and
+          (= (:status response) expected-status)
+          (not (nil? (:id body)))))))
+  (testing "Should return status 400 when requesting with an invalid body."
+    (let [request {:request-method :post
+                   :uri            "/items"
+                   :body-params    {:quantity 1
+                                    :price    0.1}}
+          response (handler request)
+          expected-status 400]
+      (is (= (:status response) expected-status)))))
