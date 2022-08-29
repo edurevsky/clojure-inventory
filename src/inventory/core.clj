@@ -6,13 +6,12 @@
             [reitit.ring.middleware.muuntaja :as rrmm]
             [reitit.ring.middleware.exception :as rrme]
             [reitit.ring.coercion :as rrc]
-            [org.httpkit.server :refer [run-server]]))
+            [org.httpkit.server :refer [run-server]]
+            [inventory.routes :refer [routes]]))
 
 (def handler
   (ring/ring-handler
-    (ring/router
-      [["/ok" {:name ::ok
-               :get  {:handler (fn [_] {:status 200})}}]])
+    (ring/router routes)
     {:data
      {:coercion rcs/coercion
       :muuntaja m/instance
