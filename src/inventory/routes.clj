@@ -4,7 +4,7 @@
             [schema.core :as s]
             [inventory.models :as models]))
 
-(def empty-body (s/pred empty? "Empty body"))
+(def empty-body (s/pred empty? 'a-empty-body))
 
 (def routes
   [["/ok" {:name ::ok
@@ -29,4 +29,11 @@
                            :parameters {:path {:id s/Uuid}}
                            :responses  {204 {:body empty-body}
                                         404 {:body empty-body}}
-                           :handler handlers/handle-delete-item-by-id}}]])
+                           :handler handlers/handle-delete-item-by-id}}]
+   ["/purchase" {:name ::purchase
+                 :post {:middleware [[middlewares/db-middleware]]
+                        :parameters {:body {:item-id s/Uuid
+                                            :amount  s/Int}}
+                        :responses  {204 {:body empty-body}
+                                     400 {:body {:message s/Str}}}
+                        :handler    handlers/handle-item-purchase}}]])
