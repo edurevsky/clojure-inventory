@@ -33,17 +33,17 @@
     {:inventory-items (count inventory)
      :inventory-value total}))
 
-(defn has-stock?
+(defn high-amount?
   [item-quantity purchase-amount]
   (< item-quantity purchase-amount))
 
 (defn item-purchase
   "Returns the updated inventory with the updated Item."
   [inventory purchase]
-  (let [id (:item/id purchase)
+  (let [id (:item-id purchase)
         item (get inventory id)
         purchase-amount (:amount purchase)
         item-quantity (:quantity item)]
-    (if (has-stock? item-quantity purchase-amount)
+    (if (high-amount? item-quantity purchase-amount)
       (throw (ex-info "Purchase amount is higher than the item quantity." {:type ::purchase-ex}))
       (update-in inventory [id :quantity] - purchase-amount))))
