@@ -16,6 +16,15 @@
 (defn handle-get-item-by-id
   [{:keys [db path-params]}]
   (let [id (parse-uuid (:id path-params))]
-    (if-let [item (logic/item-with-total-price @db id)]
-      {:status 200 :body item}
+    (if (contains? @db id)
+      {:status 200 :body (logic/item-with-total-price @db id)}
       {:status 404})))
+
+(defn handle-delete-item-by-id
+  [{:keys [db path-params]}]
+  (let [id (parse-uuid (:id path-params))]
+    (if (not (contains? @db id))
+      {:status 404}
+      (do
+        (swap! db logic/remove-item id)
+        {:status 204}))))
