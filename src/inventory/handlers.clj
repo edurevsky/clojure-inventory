@@ -28,3 +28,12 @@
       (do
         (swap! db logic/remove-item id)
         {:status 204}))))
+
+(defn handle-item-purchase
+  [{:keys [db body-params]}]
+  (try
+    (swap! db logic/item-purchase (update body-params :item-id parse-uuid))
+    {:status 204}
+    (catch Exception _
+      {:status 400
+       :body {:message "The product does not have the requested amount to be purchased."}})))
