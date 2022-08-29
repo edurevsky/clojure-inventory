@@ -11,18 +11,18 @@
 
 (def handler
   (ring/ring-handler
-    (ring/router routes)
-    {:data
-     {:coercion rcs/coercion
-      :muuntaja m/instance
-      :middleware [rrmp/parameters-middleware
-                   rrmm/format-negotiate-middleware
-                   rrmm/format-response-middleware
-                   rrme/exception-middleware
-                   rrmm/format-request-middleware
-                   rrc/coerce-exceptions-middleware
-                   rrc/coerce-request-middleware
-                   rrc/coerce-response-middleware]}}))
+    (ring/router routes
+                 {:data
+                  {:coercion   rcs/coercion
+                   :muuntaja   m/instance
+                   :middleware [rrmp/parameters-middleware
+                                rrmm/format-negotiate-middleware
+                                rrmm/format-response-middleware
+                                rrme/exception-middleware
+                                rrmm/format-request-middleware
+                                rrc/coerce-exceptions-middleware
+                                rrc/coerce-request-middleware
+                                rrc/coerce-response-middleware]}})))
 
 (defonce service (atom nil))
 
