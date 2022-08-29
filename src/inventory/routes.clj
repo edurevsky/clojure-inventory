@@ -24,4 +24,9 @@
                         :parameters {:path {:id s/Uuid}}
                         :responses  {200 {:body models/Item}
                                      404 {:body empty-body}}
-                        :handler    handlers/handle-get-item-by-id}}]])
+                        :handler    handlers/handle-get-item-by-id}
+                  :delete {:middleware [[middlewares/db-middleware]]
+                           :parameters {:path {:id s/Uuid}}
+                           :responses  {204 {:body empty-body}
+                                        404 {:body empty-body}}
+                           :handler handlers/handle-delete-item-by-id}}]])
