@@ -12,10 +12,12 @@
   [item]
   (* (:price item) (:quantity item)))
 
-(defn item-total-price
+(defn item-with-total-price
   [inventory item-id]
-  (let [item (get inventory item-id)]
-    {:total-price (item-total item)}))
+  (let [item (get inventory item-id)
+        total (item-total item)]
+    (-> item
+        (assoc :total-price total))))
 
 (defn inventory-info
   [inventory]
