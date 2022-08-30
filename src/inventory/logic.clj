@@ -49,5 +49,6 @@
       (update-in inventory [id :quantity] - purchase-amount))))
 
 (defn item-update
+  "Returns the inventory with the updated Item."
   [inventory item-id to-update]
   (update inventory item-id merge to-update))
