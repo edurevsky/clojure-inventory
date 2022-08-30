@@ -12,3 +12,7 @@
   {:name     s/Str
    :quantity s/Int
    :price    s/Num})
+
+(def ItemUpdate
+  {:name  s/Str
+   :price s/Num})
