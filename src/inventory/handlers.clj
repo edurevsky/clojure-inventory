@@ -29,14 +29,23 @@
         (swap! db logic/remove-item id)
         {:status 204}))))
 
+(defn- item-purchase
+  [db body-params]
+  (let [result (logic/item-purchase @db body-params)]
+    (if (not (:success? result))
+      {:status 400
+       :body   {:message "ERROR"}}
+      (do
+        (reset! db (:inventory result))
+        {:status 204}))))
+
 (defn handle-item-purchase
   [{:keys [db body-params]}]
-  (try
-    (swap! db logic/item-purchase (update body-params :item-id parse-uuid))
-    {:status 204}
-    (catch Exception _
+  (let [body-params (update body-params :item-id parse-uuid)]
+    (if (contains? @db (:item-id body-params))
+      (item-purchase db body-params)
       {:status 400
-       :body   {:message "The product does not have the requested amount to be purchased."}})))
+       :body   {:message "Item not found."}})))
 
 (defn handle-update-item-by-id
   [{:keys [db path-params body-params]}]
