@@ -19,17 +19,22 @@
                      :parameters {:body models/NewItem}
                      :responses  {201 {:body models/Item}}
                      :handler    handlers/handle-add-item}}]
-   ["/items/:id" {:name ::items-id
-                  :get {:middleware [[middlewares/db-middleware]]
-                        :parameters {:path {:id s/Uuid}}
-                        :responses  {200 {:body models/Item}
-                                     404 {:body empty-body}}
-                        :handler    handlers/handle-get-item-by-id}
+   ["/items/:id" {:name   ::items-id
+                  :get    {:middleware [[middlewares/db-middleware]]
+                           :parameters {:path {:id s/Uuid}}
+                           :responses  {200 {:body models/Item}
+                                        404 {:body empty-body}}
+                           :handler    handlers/handle-get-item-by-id}
                   :delete {:middleware [[middlewares/db-middleware]]
                            :parameters {:path {:id s/Uuid}}
                            :responses  {204 {:body empty-body}
                                         404 {:body empty-body}}
-                           :handler handlers/handle-delete-item-by-id}}]
+                           :handler    handlers/handle-delete-item-by-id}
+                  :put    {:middleware [[middlewares/db-middleware]]
+                           :parameters {:body models/ItemUpdate
+                                        :path {:id s/Uuid}}
+                           :responses  {200 {:body models/Item}}
+                           :handler    handlers/handle-update-item-by-id}}]
    ["/purchase" {:name ::purchase
                  :post {:middleware [[middlewares/db-middleware]]
                         :parameters {:body {:item-id s/Uuid
