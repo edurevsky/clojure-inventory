@@ -45,8 +45,8 @@
         purchase-amount (:amount purchase)
         item-quantity (:quantity item)]
     (if (high-amount? item-quantity purchase-amount)
-      (throw (ex-info "Purchase amount is higher than the item quantity." {:type ::purchase-ex}))
-      (update-in inventory [id :quantity] - purchase-amount))))
+      {:inventory inventory :success? false}
+      {:inventory (update-in inventory [id :quantity] - purchase-amount) :success? true})))
 
 (defn item-update
   "Returns the inventory with the updated Item."
