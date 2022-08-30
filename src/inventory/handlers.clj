@@ -36,4 +36,14 @@
     {:status 204}
     (catch Exception _
       {:status 400
-       :body {:message "The product does not have the requested amount to be purchased."}})))
+       :body   {:message "The product does not have the requested amount to be purchased."}})))
+
+(defn handle-update-item-by-id
+  [{:keys [db path-params body-params]}]
+  (let [id (parse-uuid (:id path-params))]
+    (if (contains? @db id)
+      (do
+        (swap! db logic/item-update id body-params)
+        {:status 200
+         :body   (logic/item-with-total-price @db id)})
+      {:status 404})))
