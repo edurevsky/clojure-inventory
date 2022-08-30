@@ -75,7 +75,7 @@ Put Mapping:
 // in the db
 {
   "id": "9ad71e6b-3c85-4176-bd26-f82957473ccf",
-  "name": "xpto",
+  "name": "xpto2",
   "quantity": 2,
   "price": 3.99,
   "total-price": 7.98
